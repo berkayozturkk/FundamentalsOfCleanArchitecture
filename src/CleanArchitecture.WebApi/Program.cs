@@ -9,6 +9,11 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 builder.Services.AddControllers()
     .AddApplicationPart(
     typeof(CleanArchitecture.Presentation.AssemblyReferance).Assembly);
+
+builder.Services.AddMediatR
+    (cfr => cfr.RegisterServicesFromAssemblies(
+        typeof(CleanArchitecture.Application.AssemblyReference).Assembly));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
