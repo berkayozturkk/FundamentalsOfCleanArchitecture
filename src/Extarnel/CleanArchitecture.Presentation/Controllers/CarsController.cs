@@ -1,5 +1,7 @@
 ﻿using CleanArchitecture.Application.Features.CarFeatures.Command.CreateCar;
+using CleanArchitecture.Application.Features.CarFeatures.Queries.GetAllCar;
 using CleanArchitecture.Domain.Dtos;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Presentation.Abstraction;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,14 @@ namespace CleanArchitecture.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             MessageResponse response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> GetAllCar(GetAllCarQuery request,
+         CancellationToken cancellationToken)
+        {
+            IList<Car> response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
     }
