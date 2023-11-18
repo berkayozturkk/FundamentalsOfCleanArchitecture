@@ -6,6 +6,7 @@ using CleanArchitecture.Persistance.Context;
 using CleanArchitecture.Persistance.Repositories;
 using CleanArchitecture.Persistance.Services;
 using CleanArchitecture.WebApi.Middleware;
+using CleanArcihtecture.Infrastructure.Services;
 using FluentValidation;
 using GenericRepository;
 using MediatR;
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork<AppDbContext>>();
 builder.Services.AddScoped<ICarRepository,CarRepository>();
+builder.Services.AddScoped<IMailService,MailService>();
 
 
 builder.Services.AddAutoMapper(typeof

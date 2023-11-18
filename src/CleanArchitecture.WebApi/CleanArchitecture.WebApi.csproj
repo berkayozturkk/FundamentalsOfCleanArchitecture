@@ -11,6 +11,7 @@
     <PackageReference Include="EntityFrameworkCore.GenericRepository.Nuget" Version="1.0.2" />
     <PackageReference Include="EntityFrameworkCore.Pagination" Version="7.0.5" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
+    <PackageReference Include="GenericEmailService" Version="1.0.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.13" />
@@ -27,6 +28,7 @@
     <ProjectReference Include="..\Core\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
     <ProjectReference Include="..\Extarnel\CleanArchitecture.Persistance\CleanArchitecture.Persistance.csproj" />
     <ProjectReference Include="..\Extarnel\CleanArchitecture.Presentation\CleanArchitecture.Presentation.csproj" />
+    <ProjectReference Include="..\Extarnel\CleanArcihtecture.Infrastructure\CleanArcihtecture.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
