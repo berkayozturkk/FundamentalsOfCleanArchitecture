@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Features.CarFeatures.Queries.GetAllCar;
 using CleanArchitecture.Application.Services;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Repositories;
+using EntityFrameworkCorePagination.Nuget.Pagination;
 using GenericRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,8 +32,10 @@ public sealed class CarService : ICarService
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IList<Car>> GetAllAsync(GetAllCarQuery request, CancellationToken cancellationToken)
+    public async Task<PaginationResult<Car>> GetAllAsync(GetAllCarQuery request, CancellationToken cancellationToken)
     {
-        return await _carRepository.GetAll().ToListAsync(cancellationToken);
+        return await _carRepository
+            .GetWhere(p => p.Name.ToLower().Contains(request.Search.ToLower()))
+            .ToPagedListAsync(request.pageNumber,request.pageSize,cancellationToken);
     }
 }
