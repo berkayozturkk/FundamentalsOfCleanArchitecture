@@ -1,15 +1,27 @@
 ﻿using CleanArchitecture.Domain.Abstraction;
+using CleanArchitecture.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace CleanArchitecture.Persistance.Context;
 
-public sealed class AppDbContext : DbContext
+public sealed class AppDbContext : IdentityDbContext<AppUser,IdentityRole,string>
 {
     public AppDbContext(DbContextOptions options) : base(options){ }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) =>
+    protected override void OnModelCreating(ModelBuilder modelBuilder) 
+    {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyReferance).Assembly);
+
+        modelBuilder.Ignore<IdentityUserLogin<string>>();
+        modelBuilder.Ignore<IdentityUserRole<string>>();
+        modelBuilder.Ignore<IdentityUserClaim<string>>();
+        modelBuilder.Ignore<IdentityUserToken<string>>();
+        modelBuilder.Ignore<IdentityRoleClaim<string>>();
+        modelBuilder.Ignore<IdentityRole<string>>();
+    }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
