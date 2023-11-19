@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Abstractions;
+using CleanArchitecture.Application.Features.AuthFeatures.Commands.CreateNewTokenByRefreshToken;
 using CleanArchitecture.Application.Features.AuthFeatures.Commands.Login;
 using CleanArchitecture.Application.Features.AuthFeatures.Commands.Register;
 using CleanArchitecture.Application.Services;
@@ -22,6 +23,23 @@ public sealed class AuthService : IAuthService
         _mapper = mapper;
         _mailService = mailService;
         _jwtProvider = jwtProvider;
+    }
+
+    public async Task<LoginCommandResponse> CreateTokenByRefreshTokanAsync(CreateNewTokenByRefreshTokenCommand request, CancellationToken cancellationToken)
+    {
+        AppUser user = await _userManager.FindByIdAsync(request.UserId);
+
+        if (user is null)
+            throw new Exception("User not found");
+
+        if (user.RefreshToken != request.RefreshToken)
+            throw new Exception("Refresh token is invalid");
+
+        if (user.RefreshTokenExpries < DateTime.Now)
+            throw new Exception("Refresh token time is invalid");
+
+        LoginCommandResponse response = await _jwtProvider.CreateTokenAsync(user);
+        return response;
     }
 
     public async Task<LoginCommandResponse> LoginAsync(LoginCommand request,
