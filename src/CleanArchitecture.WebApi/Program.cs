@@ -1,3 +1,4 @@
+using CleanArchitecture.Application.Abstractions;
 using CleanArchitecture.Application.Behaviors;
 using CleanArchitecture.Application.Services;
 using CleanArchitecture.Domain.Entities;
@@ -7,6 +8,7 @@ using CleanArchitecture.Persistance.Repositories;
 using CleanArchitecture.Persistance.Services;
 using CleanArchitecture.WebApi.Middleware;
 using CleanArchitecture.WebApi.OptionsSetup;
+using CleanArcihtecture.Infrastructure.Authentication;
 using CleanArcihtecture.Infrastructure.Services;
 using FluentValidation;
 using GenericRepository;
@@ -18,14 +20,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ICarService,CarService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork<AppDbContext>>();
 builder.Services.AddScoped<ICarRepository,CarRepository>();
-builder.Services.AddScoped<IMailService,MailService>();
+
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<JwtOption, JwtOption>();
 
 builder.Services.ConfigureOptions<JwtOptionSetup>();
+builder.Services.Configure<JwtOption>(builder.Configuration.GetSection("Jwt"));
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+
 builder.Services.AddAuthentication().AddJwtBearer();
 
 builder.Services.AddAutoMapper(typeof

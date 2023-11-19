@@ -17,7 +17,6 @@ namespace CleanArchitecture.WebApi.OptionsSetup
 
         public void PostConfigure(string? name, JwtBearerOptions options)
         {
-
             options.TokenValidationParameters.ValidateIssuer = true;
             options.TokenValidationParameters.ValidateAudience = true;
             options.TokenValidationParameters.ValidateLifetime = true;

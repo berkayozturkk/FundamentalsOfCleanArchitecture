@@ -1,11 +1,9 @@
-﻿namespace CleanArchitecture.Application.Features.AuthFeatures.Commands.Login;
+﻿using System.Runtime.CompilerServices;
+
+namespace CleanArchitecture.Application.Features.AuthFeatures.Commands.Login;
 
 public sealed record LoginCommandResponse(
     string Token,
     string RefreshToken,
     DateTime? RefreshTokenExpires,
-    string UserID,
-    string UserName,
-    string Email);
-
-
+    string UserID);

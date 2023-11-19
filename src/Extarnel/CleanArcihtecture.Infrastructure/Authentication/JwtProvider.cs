@@ -16,30 +16,32 @@ public sealed class JwtProvider : IJwtProvider
     private readonly JwtOption _jwtOptions;
     private readonly UserManager<AppUser> _userManager;
 
-    public JwtProvider(IOptions<JwtOption> jwtOptions)
+    public JwtProvider(JwtOption jwtOptions, UserManager<AppUser> userManager)
     {
-        _jwtOptions = jwtOptions.Value;
+        _jwtOptions = jwtOptions;
+        _userManager = userManager;
     }
 
     public async Task<LoginCommandResponse> CreateTokenAsync(AppUser user)
     {
+        
         var claims = new Claim[]
         {
-            new Claim(ClaimTypes.Email,user.Email),
-            new Claim(JwtRegisteredClaimNames.Name,user.UserName),
-            new Claim("UserName",user.UserName),
+        new Claim(ClaimTypes.Email,user.Email),
+        new Claim(JwtRegisteredClaimNames.Name,user.UserName),
+        new Claim("UserName",user.UserName),
         };
 
         DateTime expires = DateTime.Now.AddHours(1);
 
         JwtSecurityToken jwtSecurityToken = new(
-            issuer: _jwtOptions.Issuer,
-            audience: _jwtOptions.Audience,
+            issuer: "Berkay Ozturk",
+            audience: "BerkayOzturk.net",
             claims: claims,
-            notBefore:DateTime.Now,
+            notBefore: DateTime.Now,
             expires: expires,
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey
-            (Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),SecurityAlgorithms.HmacSha256));
+            (Encoding.UTF8.GetBytes("my secret key my secret key**")), SecurityAlgorithms.HmacSha256));
 
         string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
@@ -53,9 +55,7 @@ public sealed class JwtProvider : IJwtProvider
             token,
             refrensToken,
             user.RefreshTokenExpries,
-            user.Id,
-            user.UserName,
-            user.Email);
+            user.Id);
 
         return response;
     }
