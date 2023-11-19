@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Features.AuthFeatures.Commands.Login;
 using CleanArchitecture.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,9 +16,9 @@ public sealed class JwtProvider : IJwtProvider
     private readonly JwtOption _jwtOptions;
     private readonly UserManager<AppUser> _userManager;
 
-    public JwtProvider(JwtOption jwtOptions, UserManager<AppUser> userManager)
+    public JwtProvider(IOptions<JwtOption> jwtOptions, UserManager<AppUser> userManager)
     {
-        _jwtOptions = jwtOptions;
+        _jwtOptions = jwtOptions.Value;
         _userManager = userManager;
     }
 
@@ -34,13 +35,13 @@ public sealed class JwtProvider : IJwtProvider
         DateTime expires = DateTime.Now.AddHours(1);
 
         JwtSecurityToken jwtSecurityToken = new(
-            issuer: "Berkay Ozturk",
-            audience: "BerkayOzturk.net",
+            issuer: _jwtOptions.Issuer,
+            audience: _jwtOptions.Audience,
             claims: claims,
             notBefore: DateTime.Now,
             expires: expires,
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey
-            (Encoding.UTF8.GetBytes("my secret key my secret key**")), SecurityAlgorithms.HmacSha256));
+            (Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)), SecurityAlgorithms.HmacSha256));
 
         string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
