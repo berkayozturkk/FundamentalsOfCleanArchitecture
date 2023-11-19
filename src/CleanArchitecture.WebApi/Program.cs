@@ -34,6 +34,7 @@ builder.Services.Configure<JwtOption>(builder.Configuration.GetSection("Jwt"));
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
 builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthentication();
 
 builder.Services.AddAutoMapper(typeof
     (CleanArchitecture.Persistance.AssemblyReferance).Assembly);
@@ -74,7 +75,7 @@ app.UseMiddlewareExtensions();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
