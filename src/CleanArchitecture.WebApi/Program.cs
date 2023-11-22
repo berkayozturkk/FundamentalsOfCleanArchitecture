@@ -40,6 +40,12 @@ builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddAuthentication();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => policy.AllowAnyOrigin()
+    .AllowAnyMethod().AllowCredentials().SetIsOriginAllowed(policy => true));
+});
+
 builder.Services.AddAutoMapper(typeof
     (CleanArchitecture.Persistance.AssemblyReferance).Assembly);
 
@@ -98,6 +104,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseMiddlewareExtensions();
 
