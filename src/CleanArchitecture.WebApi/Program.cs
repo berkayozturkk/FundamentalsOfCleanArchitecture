@@ -14,7 +14,6 @@ using FluentValidation;
 using GenericRepository;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -23,10 +22,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICarService,CarService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 
 builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork<AppDbContext>>();
 builder.Services.AddScoped<ICarRepository,CarRepository>();
+builder.Services.AddScoped<IUserRoleRepository,UserRoleRepository>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<JwtOption, JwtOption>();
