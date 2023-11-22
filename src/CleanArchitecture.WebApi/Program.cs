@@ -44,7 +44,7 @@ builder.Services.AddAutoMapper(typeof
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
-builder.Services.AddIdentity<AppUser,IdentityRole>()
+builder.Services.AddIdentity<AppUser,Role>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddControllers()
